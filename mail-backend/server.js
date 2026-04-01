@@ -7,6 +7,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Incoming Request Logger
+app.use((req, res, next) => {
+  console.log(`[REQUEST] ${req.method} ${req.path} at ${new Date().toISOString()}`);
+  next();
+});
+
 // ══════════════════════════════════════════════════════════════
 // ZCOER Intelligent Grievance Portal - Mail Backend (Port 5001)
 // ══════════════════════════════════════════════════════════════
