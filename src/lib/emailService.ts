@@ -3,6 +3,7 @@ import { STUDENT_DATABASE } from '../constants';
 
 // Use VITE_API_BASE_URL from environment or fallback to /api for local proxy
 const BACKEND_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+console.log('Connecting to:', BACKEND_URL);
 
 /**
  * ZCOER AI-Powered Email Gateway
