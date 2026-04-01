@@ -20,6 +20,11 @@ app.use(express.json());
 //    Run: node server.js
 // ══════════════════════════════════════════════════════════════
 
+// STARTUP AUTH CHECK (FOR RENDER TROUBLESHOOTING)
+console.log(`[AUTH] ENVIRONMENT CHECK:`);
+console.log(`[AUTH] GMAIL_USER: ${process.env.GMAIL_USER ? 'PRESENT (ok)' : 'MISSING (will fallback)'}`);
+console.log(`[AUTH] GMAIL_PASS: ${process.env.GMAIL_PASS ? 'PRESENT (ok)' : 'MISSING (will fallback)'}`);
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -75,8 +80,17 @@ app.post("/send-mail", async (req, res) => {
     console.log(`[MAIL SENT] To: ${to} | Subject: ${subject} | MessageId: ${info.messageId}`);
     res.json({ success: true, messageId: info.messageId, to });
   } catch (error) {
-    console.error(`[MAIL ERROR] To: ${to} | Error:`, error.message);
-    res.status(500).json({ error: error.message });
+    console.error(`[MAIL ERROR] FULL DIAGNOSTIC:`, {
+      code: error.code,
+      command: error.command,
+      response: error.response,
+      message: error.message
+    });
+    res.status(500).json({ 
+      error: "Mail delivery failed", 
+      details: error.message,
+      code: error.code 
+    });
   }
 });
 
